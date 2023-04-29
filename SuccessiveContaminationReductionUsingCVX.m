@@ -2,7 +2,7 @@ function SuccessiveContaminationReductionUsingCVX(CW_RPO_caseNum)
 
 %% Set up CW transfer
 if nargin < 1, CW_RPO_caseNum = 113111900; end
-if nargin < 3, fPlotContamSuccApp = false; end
+fPlotContamSuccApp = false;
 
 SOCP_Params = CW_RPO_TestCondition(CW_RPO_caseNum);
 SOCP_Params.solver = Solver.MOSEK;

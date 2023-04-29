@@ -34,7 +34,7 @@ function SOCP_Params = CW_RPO_TestCondition(caseNum)
         
     switch floor(rem(caseNum/1e5,10)) % 6th digit
         case 0
-            SOCP_Params.Omega = 0.001; % From email?
+            SOCP_Params.Omega = 0.001; % From email
         case 1 
             % From ch 13, pg238
             SOCP_Params.Omega = 0.001060922896439; 
