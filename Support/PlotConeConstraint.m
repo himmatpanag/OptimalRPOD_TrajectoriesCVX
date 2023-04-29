@@ -16,4 +16,5 @@ function PlotConeConstraint(ax,alpha, height, unitVec, origin)
     
     rotAngle = 180/pi * acos(dot(unitVec,[0;0;1]));   
     rotate(s,[1;0;0],-rotAngle,origin);
+    axis equal
 end 

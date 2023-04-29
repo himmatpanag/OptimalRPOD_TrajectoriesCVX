@@ -82,7 +82,7 @@ function SOCP_Params = CW_RPO_TestCondition(caseNum)
             SOCP_Params.rFinal = SOCP_Params.rFinal([2,1,3]);
     end 
     
-    switch floor(rem(caseNum/10,10))
+    switch floor(rem(caseNum/10,10)) % second digit
         case 0
             SOCP_Params.vInit = [0;0;0];
         case 10
@@ -115,5 +115,22 @@ function SOCP_Params = CW_RPO_TestCondition(caseNum)
     SOCP_Params.usePlanarConstraints = false; 
     SOCP_Params.planarConstraints = struct;
     SOCP_Params.vFinal = [0;0;0];
+
+    SOCP_Params.limitThrust = true;
+    
+    SOCP_Params.trustRegion.useTrustRegion = false;
+    SOCP_Params.trustRegion.pos = 1e-4; 
+    SOCP_Params.trustRegion.eta = 1e-1; % 1e-1; % 1e-1; 
+    SOCP_Params.trustRegion.u = 1e-1; 
+
+    SOCP_Params.solver = Solver.MOSEK;
+
+    SOCP_Params.thrustPointingConstraint.active = false; 
+    SOCP_Params.thrustPointingConstraint.useLinearApprox = true; 
+    SOCP_Params.thrustPointingConstraint.activeRadius = 0.1; % within 100m of target, constraints are active. 
+    SOCP_Params.thrustPointingConstraint.angle = 15*pi/180; 
+    SOCP_Params.thrustPointingConstraint.useSphericalTarget = false; 
+    SOCP_Params.thrustPointingConstraint.numConstraintsPerStep = 1;
+    SOCP_Params.thrustPointingConstraint.useLinearApprox = false;         
 
 end 

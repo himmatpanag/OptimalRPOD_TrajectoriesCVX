@@ -1,17 +1,15 @@
 function SuccessiveContaminationReductionUsingCVX(CW_RPO_caseNum)
 
 %% Set up CW transfer
-if nargin < 1, CW_RPO_caseNum = 113171900; end
+if nargin < 1, CW_RPO_caseNum = 113111900; end
 if nargin < 3, fPlotContamSuccApp = false; end
-% CW_RPO_caseNum = 113181900;
-% CW_RPO_caseNum = 113171900;
 
 SOCP_Params = CW_RPO_TestCondition(CW_RPO_caseNum);
 SOCP_Params.solver = Solver.MOSEK;
 SOCP_Params.limitThrust = true; 
 
 %% Set up spaceraft parameters 
-% Step 0 Define spacecraft mass ffs man!
+% Step 0 Define spacecraft mass 
 SOCP_Params.numSteps = 100; 
 SOCP_Params.simTimeHours = .1;
 
@@ -27,22 +25,6 @@ SOCP_Params.aMax = 1e-3 * params.thrusterParameters.thrust/params.massParameters
 % Use traj from AE508?
 [eta, x, u] = OptimalApproachTrajCW(SOCP_Params);
 etaUnconst = eta; xUnconst = x; uUnconst = u;
-
-if false 
-    % Generate trajectory using primer vector theory 
-    w = SOCP_Params.Omega; 
-    a_max = SOCP_Params.aMax;
-    x0 = [SOCP_Params.rInit; SOCP_Params.vInit];
-    xf = [SOCP_Params.rFinal; SOCP_Params.vFinal];
-    tf = SOCP_Params.simTimeHours*3600; 
-    lam0_guess = [-0.078680309500705  -1.004392627562854  -0.000000000000000   0.000102632531872   0.000054579832117   0.000000000000000]';
-    rho = 1e-8; 
-    [t,x,thrustDir,delta,lam0] = ...
-        LowThrust_CSI_CW_RPO(w,x0,xf,tf,a_max,lam0_guess,rho);
-    
-    hf = PlotAE508OptimizationResults(t,x,thrustDir,delta,CW_RPO_caseNum);
-    PlotThrustAngles(t,x,delta,thrustDir,'Unconstrained',gcf);
-end 
 
 % Plot initial contamination and traj
 % initialContaminationProfile = CalculateContaminationOverTrajectory('ZeroOrderHold',...
