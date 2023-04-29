@@ -12,8 +12,13 @@ function SOCP_OrtolanoResults()
     for caseNum = [113122900, 113132900, 114122900, 114132900]
         SOCP_Params = CW_RPO_TestCondition(caseNum);
         [eta, x, u] = OptimalApproachTrajCW(SOCP_Params);
-        PlotTrajectorySummary(eta,x,u,SOCP_Params,hFig)
+        PlotTrajectorySummary(eta,x,u,SOCP_Params,hFig);
     end 
+    
+    CheckCW_DynamicsSatisfied(SOCP_Params,x,u)
+    
+    % Plot trajectories using TwoBodyODE and see if they match x from the
+    % CVX solver.
     
     %% Initial approaches from Ch7
     SOCP_Params = CW_RPO_TestCondition(125002990);    
@@ -87,6 +92,38 @@ function SOCP_OrtolanoResults()
     % Implement rotating body optimization 
 
 end
+
+function CheckCW_DynamicsSatisfied(params,x,u)
+
+    N = params.numSteps; % Number of discretization steps in control input 
+    Omega = params.Omega; 
+    OmegaSq = params.Omega^2;
+    
+    simTime = params.simTimeHours*60*60; 
+    dt = simTime/N;
+    A = zeros(6,6);
+    A(4,1) = 3*OmegaSq; A(6,3) = -OmegaSq;
+    A(4,5) = 2*Omega; A(5,4)=-2*Omega;
+    A(1,4) = 1; A(2,5) = 1; A(3,6) = 1; 
+    B = [zeros(3,3);eye(3)];
+    
+    Phi=expm(A*dt);
+        
+    A2 = [-A,B;zeros(3,9)];
+    A2tExp = expm(A2*dt);
+    IntegralExpAdtB = A2tExp(1:6,7:9);
+    Bd = Phi*IntegralExpAdtB;
+    
+    for ii = 2:params.numSteps
+        k(:, ii) = (-x(:,ii) + Phi*x(:,ii-1) + Bd*u(:,ii-1));    
+    end 
+
+    fprintf('Num violated constraints:  \t\t  %d\n',nnz(k~=0))
+    fprintf('Num constraints where error > eps: \t  %d\n',nnz(k>eps))
+    fprintf('Num constraints where error > 1e-8: \t  %d\n',nnz(k>1e-8))
+    fprintf('Largest constraint error: %d \t %d\n',max(max(k)))
+
+end 
 
 function rInit = GetInitialPos(a,alongTrackDist)
     df = alongTrackDist/a;
