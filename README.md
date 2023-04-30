@@ -14,6 +14,8 @@ Two core functions:
 
 
 **References**
+
 [1] H. Panag, R. Woollands, S. Bandyopadhyay, A. Rahmani; Reducing Thruster Plume Contamination for Satellite Servicing Using Convex Optimization, 45th AAS Guidance, Navigation & Controls Conference, 2023. 
+
 [2] Nicholas G Ortolano. Phd Thesis Autonomous Trajectory Planning for Satellite RPO and Safety of Flight Using Convex Optimization. PhD thesis, 2018.
 
