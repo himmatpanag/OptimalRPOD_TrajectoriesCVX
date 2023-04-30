@@ -4,13 +4,11 @@ Some tools to generate optimal trajectories using the convex optimisation packag
 
 Two main functions: 
 
-1. SuccessiveContaminationReductionUsingCVX.m - Recreates results in conference paper [1] where we implement a thruster pointing constrained control problem and solve it using a method of successive approximations. The constraint is illustrated in the figure below.
+1. SuccessiveContaminationReductionUsingCVX.m - Recreates results in conference paper[1] where we implement a thruster pointing constrained control problem and solve it using a method of successive approximations. The constraint is illustrated in the figure below.
 
-
-<p align="center">
-![Figure](diagramConstraint.png?raw=true "wow")
+<p align="center" width="100%">
+    <img width="65%" src="diagramConstraint.png"> 
 </p>
-
 
 2. SOCP_OrtolanoResults.m - Replicates some results from Ortolano [2], namely rendezvous and proximity operations with a conical approach corridor and spherical keep-out zone using second order cone programming techniques.
 
