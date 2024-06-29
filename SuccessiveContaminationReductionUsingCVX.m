@@ -75,7 +75,7 @@ hf.Position = [0.1 0.1 .25 .3];
 
 %% Step 3 Solve new problem with pointing constraint, this is a linear constraint 
 N = 10; iterTol = 1e-8; % .1cm
-angles = 18:2:26;
+angles  = 18:2:26;
 for jj = 1:numel(angles)
     SOCP_Params.thrustPointingConstraint.angle = angles(jj)*pi/180; 
     alphaStr = ['alpha = ',num2str(angles(jj)),' deg'];
@@ -139,30 +139,6 @@ legend('show','Location','best')
 %% Step 4 Increase angle and repeat or stop 
 
 end
-
-function [hFig1,hFig2,hFig3,hFig4,hFig5,hFig6] = CreateFigures(figVis,nameAppend)
-
-hFig1 = figure('Name',['TrajSummary',nameAppend],'Visible',figVis); 
-hFig2 = figure('Name',['Contamination',nameAppend],'Visible',figVis); grid on; hold on; 
-hFig3 = figure('Name',['ContaminationRate',nameAppend],'Visible',figVis); grid on; hold on; 
-hFig4 = figure('Name',['TrajPosComparison',nameAppend],'Visible',figVis); 
-hFig5 = figure('Name',['TrajChange',nameAppend],'Visible',figVis); 
-hFig6 = figure('Name',['Constraint',nameAppend],'Visible',figVis);
-
-end 
-
-function PlotTrajXY(t,x,hFig,strName)
-set(0,'CurrentFigure',hFig);
-subplot 211
-grid on; hold on; 
-plot(t,x(1,:),'DisplayName',strName);
-legend('show','Location','best');
-
-subplot 212
-grid on; hold on; 
-plot(t,x(2,:),'DisplayName',strName);
-legend('show','Location','best');
-end 
 
 function allFigs = terationPlots(eta,x,u,SOCP_Params,fPlotContamination,plotInBackground)
 

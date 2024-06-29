@@ -18,6 +18,8 @@ function SOCP_Params = CW_RPO_TestCondition(caseNum)
             SOCP_Params.rFinal = [0;0.02;0]; % = 20m % V bar
         case 2
             SOCP_Params.rFinal = [0;0.2;0]; % = 200m % V bar
+        case 3
+            SOCP_Params.rFinal = [0;0.004;0];
     end
     
     switch floor(rem(caseNum/10000,10)) % 5th digit
@@ -30,6 +32,8 @@ function SOCP_Params = CW_RPO_TestCondition(caseNum)
             SOCP_Params.rInit = [0.001766785022959;4.999999583796066;0];
         case 3 
             SOCP_Params.rInit = [0.007067139209739;9.999996670368782;0];
+        case 4
+            SOCP_Params.rInit = [0;0.01;0];
     end
         
     switch floor(rem(caseNum/1e5,10)) % 6th digit
