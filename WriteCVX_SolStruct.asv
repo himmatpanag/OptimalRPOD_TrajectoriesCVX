@@ -1,0 +1,35 @@
+function solStruct = WriteCVX_SolStruct(x,eta,u,CVX_Params)
+
+throttle = eta./CVX_Params.aMax;
+theta = eta; phi = eta; 
+constraint = zeros(size(eta));
+c = cos(CVX_Params.thrustPointingConstraint.angle);
+thrustDirAngle = zeros(size(eta));
+
+for ii = 1:numel(eta) 
+    xtt = (x(ii)+x(ii+1))/2;
+    utt = u(:,ii);
+    etatt = vecnorm(utt);
+    uttUnit = utt./etatt;
+    rtt = vecnorm(xtt(1:3));
+    constraint(ii) = xtt(1:3)'*utt - rtt * etatt * c;
+    if etatt > 1e-3 % 1% throttle 
+        thrustDirAngle(ii) = acos(dot(uttUnit',xtt(1:3)')./rtt)*180/pi;
+    end
+end
+
+for ii = 1:numel(theta)
+    [~,t,p] = CartesianToSpherical(u(:,ii));
+    theta(ii) = t; phi(ii) = p;
+end 
+time = linspace(0,CVX_Params.simTimeHours*3600,CVX_Params.numSteps);
+solStruct.constraint.type =  POINTING_CONSTRAINT_TYPE.ORIGIN_CONSTANT_ANGLE;
+solStruct.u = u;
+solStruct.theta = theta; 
+solStruct.phi = phi; 
+solStruct.t = time(1:end-1);
+solStruct.throttle = throttle; 
+solStruct.x = x; 
+solStruct.CVX_Params = CVX_Params;
+
+end 
